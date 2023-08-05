@@ -15,18 +15,19 @@ def perform_match_exact(row, df , *args):
 
 
 def logit(p):
-    logit_value = math.log(p / (1-p))
-    return logit_value
+    return math.log(p / (1-p))
 
 def hasCabin(x):
-    if pd.isna(x):
-        return 0
-    else:
-        return 1
+    return 0 if pd.isna(x) else 1
     
-def cohenD (tmp, metricName):
+def cohenD(tmp, metricName):
     treated_metric = tmp[tmp.treatment == 1][metricName]
     untreated_metric = tmp[tmp.treatment == 0][metricName]
-    
-    d = ( treated_metric.mean() - untreated_metric.mean() ) / math.sqrt(((treated_metric.count()-1)*treated_metric.std()**2 + (untreated_metric.count()-1)*untreated_metric.std()**2) / (treated_metric.count() + untreated_metric.count()-2))
-    return d
+
+    return (treated_metric.mean() - untreated_metric.mean()) / math.sqrt(
+        (
+            (treated_metric.count() - 1) * treated_metric.std() ** 2
+            + (untreated_metric.count() - 1) * untreated_metric.std() ** 2
+        )
+        / (treated_metric.count() + untreated_metric.count() - 2)
+    )
